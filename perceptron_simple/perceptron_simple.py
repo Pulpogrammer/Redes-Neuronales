@@ -6,7 +6,7 @@ def agregar_sesgo(datos_entrada):
         i.append(1)
     return datos_entrada    
 
-#calculo el producto intero
+#calculo el producto interno
 def exitacion(d_actual, w):
     resultado = 0
     for i in range(len(d_actual)):
