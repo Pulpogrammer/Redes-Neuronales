@@ -1,5 +1,4 @@
 # Redes-Neuronales
-Algoritmos trabajados en Fundamentos de Redes Neuronales UNAHUR, Abril 2026
 
 # Perceptron Simple
 
