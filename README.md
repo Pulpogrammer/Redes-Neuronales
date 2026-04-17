@@ -3,9 +3,7 @@ Algoritmos trabajados en Fundamentos de Redes Neuronales UNAHUR, Abril 2026
 
 # Perceptron Simple
 
-Implementación de un perceptron simple en Python, basada en el pseudocódigo clásico del algoritmo de aprendizaje por corrección de error.
-
-Es mi primer proyecto de Inteligencia Artificial, desarrollado con el objetivo de entender los fundamentos del aprendizaje automático.
+Implementación de un perceptron simple en Python, basada en el pseudocódigo clásico del algoritmo de aprendizaje por corrección de error. El objetivo de entender los fundamentos del aprendizaje automático.
 
 ## ¿Qué hace?
 
