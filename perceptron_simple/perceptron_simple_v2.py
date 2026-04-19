@@ -29,7 +29,7 @@ class PerceptronSimple:
         for i in range(len(d_actual)):
             ajuste = self._tasa_aprendizaje * e * d_actual[i]
             deltas.append(ajuste)
-        return deltas    0
+        return deltas
 
     #actualizo los valores de cada w actual
     def actualizar_w(self, w, deltas_w):
