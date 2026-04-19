@@ -8,12 +8,9 @@ class PerceptronSimple:
         self._COTA = COTA
         self._tasa_aprendizaje = tasa_aprendizaje
 
-
-
     #agrego  sesgo a cada lista interna(ejemplos), se retorna una nueva lista modificada
     def agregar_sesgo(self):
         return [i + [1] for i in self._datos_entrada]
-
 
     #calculo el producto intero
     def exitacion(self, d_actual, w):
@@ -21,7 +18,6 @@ class PerceptronSimple:
         for i in range(len(d_actual)):
             resultado += d_actual[i] * w[i]
         return resultado
-
 
     def signo (self, h):
         return 1 if h >= 0 else -1
@@ -59,8 +55,7 @@ class PerceptronSimple:
         h = self.exitacion(d_actual,w)
         salida = self.signo(h)
         return salida  
-                
-                
+                                
     def iniciar_entrenamiento(self):
         print(f"Iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objeticos: {self._y_deseadas}" )
  
@@ -93,15 +88,12 @@ class PerceptronSimple:
             
             deltas_w = self.calc_deltas(e, d_actual)
             print(f"Deltas: {deltas_w}")
-            
-            
+        
             w = self.actualizar_w(w, deltas_w)
             print(f"Pesos actualizados: {w}")
             
             error = self.calc_error_global(datos_entrada, w)
             print(f"Error global: {error:.4f}")
-
-
             if error < error_min:
                 error_min = error
                 w_min=w.copy()
@@ -113,9 +105,8 @@ class PerceptronSimple:
         return  w_min, error_min
     
 
-
 datos_entrada = [[-1, 1],[1, -1],[-1, -1],[1, 1]]
-# y deseadas, agregue estos Tipos dentro de un diccionario para verificar cada prueba
+# y deseadas, agregue los tipos dentro de un diccionario para verificar en cada caso
 y_deseadas={"AND": [-1,-1, -1, 1],
             "XOR": [1, 1, -1, -1] }
 
