@@ -33,12 +33,12 @@ def actualizar_w(w, deltas_w):
     return w    
     
 # calculo la cantidad de errores con el w actualizado  
-def calc_error_global(self, datos_entrada, w):
+def calc_error_global(datos_entrada,y_deseadas, w):
     suma_errores = 0
     for i in range(len(datos_entrada)):
         d_actual = datos_entrada[i]
-        y_actual = self._y_deseadas[i]
-        O = self.calcular_salida(d_actual, w)
+        y_actual = y_deseadas[i]
+        O = calcular_salida(d_actual, w)
         if y_actual != O:
             suma_errores += 1
     return suma_errores
