@@ -7,10 +7,8 @@ class PerceptronSimple:
         self._y_deseadas = y_deseadas
         self._COTA = COTA
         self._tasa_aprendizaje = tasa_aprendizaje
-
-
-
-    #agrego  sesgo a cada lista interna(ejemplos), se retorna una nueva lista modificada
+        
+    #agrego sesgo a cada lista interna(ejemplos), se retorna una nueva lista modificada
     def agregar_sesgo(self):
         return [i + [1] for i in self._datos_entrada]
 
@@ -21,27 +19,26 @@ class PerceptronSimple:
         for i in range(len(d_actual)):
             resultado += d_actual[i] * w[i]
         return resultado
-
-
+        
+    #asignamos signo(escalon)
     def signo (self, h):
         return 1 if h >= 0 else -1
 
-    #deltas para cada valor del dato actual
+    #deltas para cada w
     def calc_deltas(self, e, d_actual):
-        deltas = []
-            
+        deltas = []    
         for i in range(len(d_actual)):
             ajuste = self._tasa_aprendizaje * e * d_actual[i]
             deltas.append(ajuste)
         return deltas 
 
-    #actualizo los valores de cada w actual
+    #actualizo los valores del w actual
     def actualizar_w(self, w, deltas_w):
         for i in range(len(deltas_w)):
             w[i]+= deltas_w[i]
         return w    
         
-    # calculo la cantidad de errores con el w actualizado  
+    # calculo la cantidad de errores qeu da el w ya actualizado 
     def calc_error_global(self, datos_entrada, w):
         suma_errores = 0
         for i in range(len(datos_entrada)):
@@ -89,18 +86,20 @@ class PerceptronSimple:
             O = self.calcular_salida(d_actual,w) 
             e = y_actual - O
             print(f"Error puntual e: {e}")
-            
+
+            #lista deltas para cada w
             deltas_w = self.calc_deltas(e, d_actual)
             print(f"Deltas: {deltas_w}")
             
             
             w = self.actualizar_w(w, deltas_w)
             print(f"Pesos actualizados: {w}")
-            
+
+            #verifico la cantidad de error global
             error = self.calc_error_global(datos_entrada, w)
             print(f"Error global: {error:.4f}")
-
-
+            
+            #si el error es menor al ya guardado actualizo
             if error < error_min:
                 error_min = error
                 w_min=w.copy()
@@ -110,11 +109,10 @@ class PerceptronSimple:
         print(f"\n=== Entrenamiento finalizado ===")
         print(f"Iteraciones realizadas: {i}")
         return  w_min, error_min
-    
 
-
+# x datos entrada
 datos_entrada = [[-1, 1],[1, -1],[-1, -1],[1, 1]]
-# y deseadas para cada tipo de objetivo
+# y deseadas
 y_deseadas={"AND": [-1,-1, -1, 1],
             "XOR": [1, 1, -1, -1] }
 
