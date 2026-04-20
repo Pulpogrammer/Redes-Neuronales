@@ -17,7 +17,7 @@ def exitacion(d_actual, w):
 def signo (h):
     return 1 if h > 0 else -1
 
-#deltas para cada valor del dato actual
+#deltas para el w actual
 def calc_deltas(tasa_aprendizaje, e, d_actual):
     deltas = []
          
@@ -26,7 +26,7 @@ def calc_deltas(tasa_aprendizaje, e, d_actual):
         deltas.append(ajuste)
     return deltas    
 
-#actualizo los valores de cada w actual
+#actualizo los valores del w actual
 def actualizar_w(w, deltas_w):
     for i in range(len(deltas_w)):
         w[i]+= deltas_w[i]
@@ -43,8 +43,8 @@ def calc_error_global(self, datos_entrada, w):
             suma_errores += 1
     return suma_errores
             
-# tanto la exitacion y la salida se utilizan en el calculo  entrada random como en el conteo de errores
-# para no repetir codigo se utiliza esta funcion que devuelve la salida
+# como la exitacion y la salida se utilizan para la entrada random y el conteo de errores
+# cree esta funcion para no repetir código
 def calcular_salida(d_actual, w):
     h = exitacion(d_actual,w)
     salida = signo(h)
