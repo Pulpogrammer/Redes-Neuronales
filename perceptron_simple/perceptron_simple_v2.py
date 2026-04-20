@@ -8,9 +8,12 @@ class PerceptronSimple:
         self._COTA = COTA
         self._tasa_aprendizaje = tasa_aprendizaje
 
+
+
     #agrego  sesgo a cada lista interna(ejemplos), se retorna una nueva lista modificada
     def agregar_sesgo(self):
         return [i + [1] for i in self._datos_entrada]
+
 
     #calculo el producto intero
     def exitacion(self, d_actual, w):
@@ -18,6 +21,7 @@ class PerceptronSimple:
         for i in range(len(d_actual)):
             resultado += d_actual[i] * w[i]
         return resultado
+
 
     def signo (self, h):
         return 1 if h >= 0 else -1
@@ -29,7 +33,7 @@ class PerceptronSimple:
         for i in range(len(d_actual)):
             ajuste = self._tasa_aprendizaje * e * d_actual[i]
             deltas.append(ajuste)
-        return deltas
+        return deltas 
 
     #actualizo los valores de cada w actual
     def actualizar_w(self, w, deltas_w):
@@ -48,13 +52,14 @@ class PerceptronSimple:
                 suma_errores += 1
         return suma_errores
                 
-    # tanto la exitacion y la salida se utilizan en el calculo principal del dato random como en el error global
+    # tanto la exitacion y la salida se utilizan con la entrada random como en el conteo de errores
     # para no repetir codigo se utiliza esta funcion que devuelve la salida
     def calcular_salida(self, d_actual, w):
         h = self.exitacion(d_actual,w)
         salida = self.signo(h)
         return salida  
-                                
+                
+                
     def iniciar_entrenamiento(self):
         print(f"Iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objeticos: {self._y_deseadas}" )
  
@@ -87,12 +92,15 @@ class PerceptronSimple:
             
             deltas_w = self.calc_deltas(e, d_actual)
             print(f"Deltas: {deltas_w}")
-        
+            
+            
             w = self.actualizar_w(w, deltas_w)
             print(f"Pesos actualizados: {w}")
             
             error = self.calc_error_global(datos_entrada, w)
             print(f"Error global: {error:.4f}")
+
+
             if error < error_min:
                 error_min = error
                 w_min=w.copy()
@@ -104,8 +112,9 @@ class PerceptronSimple:
         return  w_min, error_min
     
 
+
 datos_entrada = [[-1, 1],[1, -1],[-1, -1],[1, 1]]
-# y deseadas, agregue los tipos dentro de un diccionario para verificar en cada caso
+# y deseadas para cada tipo de objetivo
 y_deseadas={"AND": [-1,-1, -1, 1],
             "XOR": [1, 1, -1, -1] }
 
@@ -113,7 +122,7 @@ y_deseadas={"AND": [-1,-1, -1, 1],
 COTA = 200
 #eta
 tasa_aprendizaje= 0.01
-perceptron = PerceptronSimple(datos_entrada, y_deseadas.get("XOR"), COTA, tasa_aprendizaje)
+perceptron = PerceptronSimple(datos_entrada, y_deseadas.get("AND"), COTA, tasa_aprendizaje)
 w_min, error_min = perceptron.iniciar_entrenamiento()
 print(f"Mejores pesos: {w_min}")
 print(f"Error mínimo alcanzado: {error_min:.4f}")
