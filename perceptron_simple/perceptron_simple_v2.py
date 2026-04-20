@@ -37,17 +37,16 @@ class PerceptronSimple:
             w[i]+= deltas_w[i]
         return w    
         
-    # calculamos el error promedio para cada ejemplos   
+    # calculo la cantidad de errores con el w actualizado  
     def calc_error_global(self, datos_entrada, w):
-        suma_errores = 0.0
+        suma_errores = 0
         for i in range(len(datos_entrada)):
             d_actual = datos_entrada[i]
             y_actual = self._y_deseadas[i]
             O = self.calcular_salida(d_actual, w)
-            
-            e = (y_actual - O)**2
-            suma_errores += e
-        return suma_errores / 2
+            if y_actual != O:
+                suma_errores += 1
+        return suma_errores
                 
     # tanto la exitacion y la salida se utilizan en el calculo principal del dato random como en el error global
     # para no repetir codigo se utiliza esta funcion que devuelve la salida
