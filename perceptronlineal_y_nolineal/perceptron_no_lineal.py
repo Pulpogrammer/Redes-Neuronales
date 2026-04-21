@@ -110,25 +110,31 @@ class PerceptronNoLineal:
         print(f"\n=== Entrenamiento finalizado ===")
         print(f"Iteraciones realizadas: {i}")
         return  w_min, error_min
-    
-url_entrada= "https://raw.githubusercontent.com/Pulpogrammer/Redes-Neuronales/refs/heads/main/perceptronlineal_y_nolineal/conjunto_entrenamiento.txt"
-utl_salida = "https://raw.githubusercontent.com/Pulpogrammer/Redes-Neuronales/refs/heads/main/perceptronlineal_y_nolineal/salida_deseada.txt"
-resp_entrada  = requests.get(url_entrada)
-resp_salida = requests.get(utl_salida)
-s
 
 
+def cargar_entrada():
+    url = "https://raw.githubusercontent.com/Pulpogrammer/Redes-Neuronales/refs/heads/main/perceptronlineal_y_nolineal/conjunto_entrenamiento.txt"
+    resp = requests.get(url)
+    if resp.status_code != 200:
+        raise RuntimeError(f"Error al descargar entrada: {resp.status_code}")
+    matriz = np.loadtxt(StringIO(resp.text))
+    if matriz.ndim == 1:
+        return [matriz.tolist()]
+    return [fila.tolist() for fila in matriz]
 
+def cargar_salida():
+    url = "https://raw.githubusercontent.com/Pulpogrammer/Redes-Neuronales/refs/heads/main/perceptronlineal_y_nolineal/salida_deseada.txt"
+    resp = requests.get(url)
+    if resp.status_code != 200:
+        raise RuntimeError(f"Error al descargar salida: {resp.status_code}")
+    array = np.loadtxt(StringIO(resp.text))
+    if array.ndim == 0:
+        return [float(array)]
+    return array.tolist()
 
-if resp_entrada.status_code == 200 and resp_salida.status_code == 200:
-    datos_entrada = np.loadtxt(StringIO(resp_entrada.text))
-          
-
-   # print(datos_entrada)
-    print(datos_entrada)
-    
-datos_entrada = lista_final
-y_deseadas = lista_final2
+
+datos_entrada = cargar_entrada()
+y_deseadas = cargar_salida()
 #n de iteraciones
 COTA = 200
 #eta
