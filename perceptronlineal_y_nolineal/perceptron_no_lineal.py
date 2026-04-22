@@ -85,8 +85,7 @@ class PerceptronNoLineal:
             y_actual = self._y_deseadas[i_random]
             #le asigno la funcion para calcular la exitacion y tanh 
             O = self.calcular_salida(d_actual,w) 
-            print(f"dato {O}")
-            print(f"y {y_actual}")
+       
             e = y_actual - O
             print(f"Error puntual e: {e}")
             
