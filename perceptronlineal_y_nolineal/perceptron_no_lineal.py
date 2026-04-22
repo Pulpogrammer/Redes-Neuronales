@@ -163,8 +163,8 @@ w_min, error_min = perceptron.iniciar_entrenamiento()
 print(f"Mejores pesos: {w_min}")
 print(f"Error mínimo alcanzado: {error_min:.4f}")
 
-# Evaluación de 5 ejemplos con w_min
-print(f"\n=== Evaluación con w_min (5 ejemplos) ===")
+# Evaluo ejemplos con w_min
+print(f"Evaluacion con w_min")
 datos_con_sesgo = [fila + [1] for fila in datos_entrada]
 índice = datos_con_sesgo[:5]
 
