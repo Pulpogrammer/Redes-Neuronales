@@ -110,6 +110,10 @@ class PerceptronNoLineal:
         print(f"Iteraciones realizadas: {i}")
         return  w_min, error_min
 
+# para y objetivo mayor a 1
+def normalizar_salida(y, y_min, y_max):
+    return ((y - y_min) / (y_max - y_min)) * 2 - 1
+
 
 def cargar_entrada():
     url = "https://raw.githubusercontent.com/Pulpogrammer/Redes-Neuronales/refs/heads/main/perceptronlineal_y_nolineal/conjunto_entrenamiento.txt"
@@ -134,13 +138,37 @@ def cargar_salida():
 
 datos_entrada = cargar_entrada()
 y_deseadas = cargar_salida()
+
+
+# Normalizo salidas entre intervalo [-1,1] para la tangente
+y_min = min(y_deseadas)
+y_max = max(y_deseadas)
+y_normalizadas = []
+for y in y_deseadas:
+    if y < -1 or y > 1:
+        y_normalizadas.append(normalizar_salida(y, y_min, y_max))
+    else:
+        y_normalizadas.append(y)
+print(f"Salidas: {y_normalizadas}")
+
 #n de iteraciones
 COTA = 200
 #eta
-tasa_aprendizaje= 0.01
+tasa_aprendizaje = 0.01
 beta = 0.5
-perceptron = PerceptronNoLineal(datos_entrada, y_deseadas, COTA, tasa_aprendizaje, beta)
+
+perceptron = PerceptronNoLineal(datos_entrada, y_normalizadas, COTA, tasa_aprendizaje, beta)
 w_min, error_min = perceptron.iniciar_entrenamiento()
+
 print(f"Mejores pesos: {w_min}")
 print(f"Error mínimo alcanzado: {error_min:.4f}")
-    
+
+# Evaluación de 5 ejemplos con w_min
+print(f"\n=== Evaluación con w_min (5 ejemplos) ===")
+datos_con_sesgo = [fila + [1] for fila in datos_entrada]
+índice = datos_con_sesgo[:5]
+
+for i in range(len(indice)):
+    objetivo   = y_normalizadas[i]
+    prediccion = perceptron.calcular_salida(datos_con_sesgo[i], w_min)
+    print(f"  Ejemplo {i + 1} | Objetivo: {objetivo} | Predicción: {prediccion}")
