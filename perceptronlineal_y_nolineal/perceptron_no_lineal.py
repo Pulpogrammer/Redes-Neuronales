@@ -166,9 +166,9 @@ print(f"Error mínimo alcanzado: {error_min:.4f}")
 # Evaluo ejemplos con w_min
 print(f"Evaluacion con w_min")
 datos_con_sesgo = [fila + [1] for fila in datos_entrada]
-índice = datos_con_sesgo[:5]
+indice = datos_con_sesgo[:5]
 
 for i in range(len(indice)):
     objetivo   = y_normalizadas[i]
     prediccion = perceptron.calcular_salida(datos_con_sesgo[i], w_min)
-    print(f"  Ejemplo {i + 1} | Objetivo: {objetivo} | Predicción: {prediccion}")
+    print(f"Ejemplo {i + 1} | Objetivo: {objetivo} | Predicción: {prediccion}")
