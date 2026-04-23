@@ -59,7 +59,7 @@ class PerceptronNoLineal:
         return tanh(self._beta * h)
                                 
     def iniciar_entrenamiento(self):
-        print(f"Iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objetivos: {self._y_deseadas}" )
+        print(f"iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objetivos: {self._y_deseadas}" )
  
         #agrego sesgo y retorno una nueva lista
         datos_entrada = self.agregar_sesgo()
@@ -70,7 +70,7 @@ class PerceptronNoLineal:
         #creo los pesos dependiendo del tamaño de la sublista 
         w = [0.0] * n_pesos
         
-        print(f"Pesos inicial: {w}")
+        print(f"pesos inicial: {w}")
         i= 0
         error = 1
         error_min = len(datos_entrada) * 2
@@ -93,7 +93,7 @@ class PerceptronNoLineal:
             #actualizo w
             w = self.actualizar_w(w, deltas_w)
             error = self.calc_error_global(datos_entrada, w)
-            print(f"Error global: {error:.4f}")
+            print(f"error global: {error:.4f}")
 
 
             if error < error_min:
@@ -101,8 +101,8 @@ class PerceptronNoLineal:
                 w_min=w.copy()
 
             i+=1
-        print(f"\n=== Entrenamiento finalizado ===")
-        print(f"Iteraciones realizadas: {i}")
+        print(f"\n=== entrenamiento finalizado ===")
+        print(f"iteraciones realizadas: {i}")
         return  w_min, error_min
 
 # para y objetivo mayor a 1
@@ -151,8 +151,8 @@ beta = 0.8
 perceptron = PerceptronNoLineal(datos_entrada, y_normalizadas, COTA, tasa_aprendizaje, beta)
 w_min, error_min = perceptron.iniciar_entrenamiento()
 
-print(f"Mejores pesos: {w_min}")
-print(f"Error mínimo alcanzado: {error_min:.4f}")
+print(f"mejores pesos: {w_min}")
+print(f"error mínimo alcanzado: {error_min:.4f}")
 
 # Evaluo ejemplos con w_min
 print(f"Evaluacion con w_min")
@@ -182,7 +182,7 @@ X_testeo  = datos_entrada[cantidad_entrenamiento:]
 #tomo los Y objetivo para testeo, que sería el 20% restante
 y_testeo  = y_normalizadas[cantidad_entrenamiento:]
 
-print(f"Ejemplos entrenamiento: {len(X_entrenamiento)} | Ejemplos test: {len(X_testeo)}")
+print(f"\n ejemplos entrenamiento: {len(X_entrenamiento)} | Ejemplos test: {len(X_testeo)}")
 
 # entreno los datos seleccionados
 perceptron = PerceptronNoLineal(X_entrenamiento, y_entrenamiento, COTA, tasa_aprendizaje, beta)
