@@ -88,8 +88,7 @@ class PerceptronNoLineal:
             #calculo el error para este dato
             e = y_actual - O
            #obtengo los deltas para luego actualizar w
-            deltas_w = self.calc_deltas(e, d_actual, O)
-            print(f"Deltas: {deltas_w}")
+            deltas_w = self.calc_deltas(e, d_actual, O)
             
             #actualizo w
             w = self.actualizar_w(w, deltas_w)
