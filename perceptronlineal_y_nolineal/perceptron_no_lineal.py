@@ -144,7 +144,7 @@ y_deseadas = cargar_salida()
 y_min = min(y_deseadas)
 y_max = max(y_deseadas)
 y_normalizadas = []
-for y in y_deseadas:    y_normalizadas.append(normalizar_salida(y, y_min, y_max))
+for y in y_deseadas:        y_normalizadas.append(normalizar_salida(y, y_min, y_max))
 
 #n de iteraciones
 COTA = 200
