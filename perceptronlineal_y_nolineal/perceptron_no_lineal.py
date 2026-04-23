@@ -140,16 +140,11 @@ datos_entrada = cargar_entrada()
 y_deseadas = cargar_salida()
 
 
-# Normalizo salidas entre intervalo [-1,1] para la tangente
+# normalizo salidas entre intervalo [-1,1] para la tangente
 y_min = min(y_deseadas)
 y_max = max(y_deseadas)
 y_normalizadas = []
-for y in y_deseadas:
-    if y < -1 or y > 1:
-        y_normalizadas.append(normalizar_salida(y, y_min, y_max))
-    else:
-        y_normalizadas.append(y)
-print(f"Salidas: {y_normalizadas}")
+for y in y_deseadas:    y_normalizadas.append(normalizar_salida(y, y_min, y_max))
 
 #n de iteraciones
 COTA = 200
