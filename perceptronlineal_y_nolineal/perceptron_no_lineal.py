@@ -152,10 +152,10 @@ perceptron = PerceptronNoLineal(datos_entrada, y_normalizadas, COTA, tasa_aprend
 w_min, error_min = perceptron.iniciar_entrenamiento()
 
 print(f"mejores pesos: {w_min}")
-print(f"error mínimo alcanzado: {error_min:.4f}")
+print(f"error minimo alcanzado: {error_min:.4f}")
 
-# Evaluo ejemplos con w_min
-print(f"Evaluacion con w_min")
+# evaluo 5 ejemplos con w_min
+print(f"rvaluacion con w_min")
 datos_con_sesgo = [fila + [1] for fila in datos_entrada]
 indice = datos_con_sesgo[:5]
 
