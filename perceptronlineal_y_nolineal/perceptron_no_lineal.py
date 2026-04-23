@@ -143,10 +143,10 @@ for y in y_deseadas:
     y_normalizadas.append(normalizar_salida(y, y_min, y_max))
 
 #n de iteraciones
-COTA = 200
+COTA = 400
 #eta
-tasa_aprendizaje = 0.01
-beta = 0.5
+tasa_aprendizaje = 0.1
+beta = 0.8
 
 perceptron = PerceptronNoLineal(datos_entrada, y_normalizadas, COTA, tasa_aprendizaje, beta)
 w_min, error_min = perceptron.iniciar_entrenamiento()
