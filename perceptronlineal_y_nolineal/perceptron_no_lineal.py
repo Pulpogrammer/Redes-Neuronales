@@ -190,20 +190,18 @@ y_testeo  = y_normalizadas[cantidad_entrenamiento:]
 print(f"Ejemplos entrenamiento: {len(X_entrenamiento)} | Ejemplos test: {len(X_testeo)}")
 
 # entreno los datos seleccionados
-
-perceptron=PerceptronNoLineal(X_entrenamiento, y_entrenamiento, COTA, tasa_aprendizaje, beta)
+perceptron = PerceptronNoLineal(X_entrenamiento, y_entrenamiento, COTA, tasa_aprendizaje, beta)
 
 w_min, error_min = perceptron.iniciar_entrenamiento()
 
 print(f"Mejores pesos: {w_min}")
 print(f"Error mínimo alcanzado: {error_min:.4f}")
 
-# testeo con el 20% que el modelo no vio
-
-print(f"\n inicio de testeo")
-
 # agrego sesgo a los datos del test entrada
 X_testeo_sesgo = [fila + [1] for fila in X_testeo]
+
+
+print(f"\n inicio de testeo")
 
 #testeo probando el w_min que encontré
 for i in range(len(X_testeo_sesgo)):
