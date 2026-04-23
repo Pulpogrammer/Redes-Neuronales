@@ -172,3 +172,45 @@ for i in range(len(indice)):
     objetivo   = y_normalizadas[i]
     prediccion = perceptron.calcular_salida(datos_con_sesgo[i], w_min)
     print(f"Ejemplo {i + 1} | Objetivo: {objetivo} | Predicción: {prediccion}")
+
+
+#para el punto b del 2, en donde hay que tomar datos de entrenamiento y prueba, elegí el 80/20
+
+# tomo el total de datos de entrada y me quedo con el 80%
+cantidad_entrenamiento = int(len(datos_entrada) * 0.8)
+
+# tomo los datos entrada del 80% hacia atras para entrenamiento 
+X_entrenamiento = datos_entrada[:cantidad_entrenamiento]
+
+#tomo los Y objetivo del 80% hacia  atras para entrenamiento
+y_entrenamiento = y_normalizadas[:cantidad_entrenamiento]
+
+#tomo los datos entrada para testeo, que sería el 20% restante
+X_testeo  = datos_entrada[cantidad_entrenamiento:]
+
+#tomo los Y objetivo para testeo, que sería el 20% restante
+y_testeo  = y_normalizadas[cantidad_entrenamiento:]
+
+print(f"Ejemplos entrenamiento: {len(X_entrenamiento)} | Ejemplos test: {len(X_testeo)}")
+
+# entreno los datos seleccionados
+
+perceptron=PerceptronNoLineal(X_entrenamiento, y_entrenamiento, COTA, tasa_aprendizaje, beta)
+
+w_min, error_min = perceptron.iniciar_entrenamiento()
+
+print(f"Mejores pesos: {w_min}")
+print(f"Error mínimo alcanzado: {error_min:.4f}")
+
+# testeo con el 20% que el modelo no vio
+
+print(f"\n inicio de testeo")
+
+# agrego sesgo a los datos del test entrada
+X_testeo_sesgo = [fila + [1] for fila in X_testeo]
+
+#testeo probando el w_min que encontré
+for i in range(len(X_testeo_sesgo)):
+    objetivo   = y_testeo[i]
+    prediccion = perceptron.calcular_salida(X_testeo_sesgo[i], w_min)
+    print(f"Ejemplo {i + 1}, Objetivo: {objetivo}, Predicción: {prediccion}")
