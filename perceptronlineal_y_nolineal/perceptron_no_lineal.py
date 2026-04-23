@@ -59,7 +59,7 @@ class PerceptronNoLineal:
         return tanh(self._beta * h)
                                 
     def iniciar_entrenamiento(self):
-        print(f"iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objetivos: {self._y_deseadas}" )
+        print(f"iniciando entrenamiento | ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | eta: {self._tasa_aprendizaje} | Objetivos: {len(self._y_deseadas)}" )
  
         #agrego sesgo y retorno una nueva lista
         datos_entrada = self.agregar_sesgo()
@@ -162,7 +162,7 @@ indice = datos_con_sesgo[:5]
 for i in range(len(indice)):
     objetivo   = y_normalizadas[i]
     prediccion = perceptron.calcular_salida(datos_con_sesgo[i], w_min)
-    print(f"Ejemplo {i + 1} | Objetivo: {objetivo} | Predicción: {prediccion}")
+    print(f"ejemplo {i + 1} | objetivo: {objetivo} | prediccion: {prediccion}")
 
 
 #para el punto b del 2, en donde hay que tomar datos de entrenamiento y prueba, elegí el 80/20
@@ -190,7 +190,7 @@ perceptron = PerceptronNoLineal(X_entrenamiento, y_entrenamiento, COTA, tasa_apr
 w_min, error_min = perceptron.iniciar_entrenamiento()
 
 print(f"Mejores pesos: {w_min}")
-print(f"Error mínimo alcanzado: {error_min:.4f}")
+print(f"Error minimo alcanzado: {error_min:.4f}")
 
 # agrego sesgo a los datos del test entrada
 X_testeo_sesgo = [fila + [1] for fila in X_testeo]
@@ -202,4 +202,4 @@ print(f"\n inicio de testeo")
 for i in range(len(X_testeo_sesgo)):
     objetivo   = y_testeo[i]
     prediccion = perceptron.calcular_salida(X_testeo_sesgo[i], w_min)
-    print(f"Ejemplo {i + 1}, Objetivo: {objetivo}, Predicción: {prediccion}")
+    print(f"ejemplo {i + 1}, objetivo: {objetivo}, predicción: {prediccion}")
