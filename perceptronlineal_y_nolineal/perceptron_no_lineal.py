@@ -85,17 +85,14 @@ class PerceptronNoLineal:
             y_actual = self._y_deseadas[i_random]
             #le asigno la funcion para calcular la exitacion y tanh 
             O = self.calcular_salida(d_actual,w) 
-       
+            #calculo el error para este dato
             e = y_actual - O
-            print(f"Error puntual e: {e}")
-            
+           #obtengo los deltas para luego actualizar w
             deltas_w = self.calc_deltas(e, d_actual, O)
             print(f"Deltas: {deltas_w}")
             
-            
-            w = self.actualizar_w(w, deltas_w)
-            print(f"Pesos actualizados: {w}")
-            
+            #actualizo w
+            w = self.actualizar_w(w, deltas_w)
             error = self.calc_error_global(datos_entrada, w)
             print(f"Error global: {error:.4f}")
 
@@ -103,8 +100,7 @@ class PerceptronNoLineal:
             if error < error_min:
                 error_min = error
                 w_min=w.copy()
-                print(f">>> Nuevo mínimo: {error_min:.4f} | w_min guardado: {w_min}")
-                
+
             i+=1
         print(f"\n=== Entrenamiento finalizado ===")
         print(f"Iteraciones realizadas: {i}")
