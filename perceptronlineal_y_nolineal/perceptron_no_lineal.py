@@ -217,7 +217,8 @@ for i in range(len(X_testeo_sesgo)):
 # y el conjunto de entrenamiento que produjo el menor error sobre datos que no vio es el mejor, ya que demuestra que el modelo aprendio
 # el patron general y no solo memorizo los datos de entrenamiento. A mayor k mas confiable la eleccion pero mayor costo computacional.
 
-# Ejemplo: elijo a k = 10, divido en 10 partes con 20 ejemplos cada uno, de los 10 partes tomo 9 en cada prueba dejando afuera umna diferente
-# Al finaliizar en cada testeo observo el conjunto que me haya dado el menor error y me quedo con ese valor
+# Ejemplo: elijo a k = 10, divido en 10 partes con 20 ejemplos cada uno, de los 10 partes tomo 9 en cada prueba dejando afuera la parte restante
+# por cada prueba la parte de testeo sera diferentem  va a ir rotando, Al finaliizar en cada testeo observo el conjunto que me haya dado el menor error,
+# el cual seria el mejor conjunto de entrenamiento
 
     
