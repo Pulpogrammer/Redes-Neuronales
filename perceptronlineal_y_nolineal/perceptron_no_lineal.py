@@ -87,11 +87,14 @@ class PerceptronNoLineal:
             O = self.calcular_salida(d_actual,w) 
             #calculo el error para este dato
             e = y_actual - O
-           #obtengo los deltas para luego actualizar w
-            deltas_w = self.calc_deltas(e, d_actual, O)
+           
+#obtengo los deltas para luego actualizar w
+            deltas_w = self.calc_deltas(e, d_actual, O)
+
             
             #actualizo w
-            w = self.actualizar_w(w, deltas_w)
+            w = self.actualizar_w(w, deltas_w)
+
             error = self.calc_error_global(datos_entrada, w)
             print(f"error global: {error:.4f}")
 
@@ -130,7 +133,9 @@ def cargar_salida():
         return [float(array)]
     return array.tolist()
 
-
+
+
+
 datos_entrada = cargar_entrada()
 y_deseadas = cargar_salida()
 
@@ -203,3 +208,16 @@ for i in range(len(X_testeo_sesgo)):
     objetivo   = y_testeo[i]
     prediccion = perceptron.calcular_salida(X_testeo_sesgo[i], w_min)
     print(f"ejemplo {i + 1}, objetivo: {objetivo}, predicción: {prediccion}")
+
+
+# ¿Como podría escojer el mejor conjunto de entrenamiento?
+# Para elegir el mejor conjunto de entrenamiento se podria utilizar validacion cruzada, probar diferentes combinaciones.
+# Dibido el total de datos en k partes iguales, en cada prueba se entrena con k-1 partes y se testea con la particion con la 
+# parte restante que no vio, rotando cual queda afuera en cada prueba. Al finalizar las k pruebas se comparan los errores de test
+# y el conjunto de entrenamiento que produjo el menor error sobre datos que no vio es el mejor, ya que demuestra que el modelo aprendio
+# el patron general y no solo memorizo los datos de entrenamiento. A mayor k mas confiable la eleccion pero mayor costo computacional.
+
+# Ejemplo: elijo a k = 10, divido en 10 partes con 20 ejemplos cada uno, de los 10 partes tomo 9 en cada prueba dejando afuera umna diferente
+# Al finaliizar en cada testeo observo el conjunto que me haya dado el menor error y me quedo con ese valor
+
+    
