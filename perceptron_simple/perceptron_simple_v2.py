@@ -38,7 +38,7 @@ class PerceptronSimple:
             w[i]+= deltas_w[i]
         return w    
         
-    # calculo la cantidad de errores qeu da el w ya actualizado 
+    # calculo la cantidad de errores que da el w ya actualizado 
     def calc_error_global(self, datos_entrada, w):
         suma_errores = 0
         for i in range(len(datos_entrada)):
