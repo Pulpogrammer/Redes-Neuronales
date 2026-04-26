@@ -15,7 +15,7 @@ def exitacion(d_actual, w):
 
 
 def signo (h):
-    return 1 if h > 0 else -1
+    return 1 if h >= 0 else -1
 
 #deltas para el w actual
 def calc_deltas(tasa_aprendizaje, e, d_actual):
