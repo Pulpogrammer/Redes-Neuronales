@@ -58,7 +58,7 @@ class PerceptronSimple:
                 
                 
     def iniciar_entrenamiento(self):
-        print(f"Iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objeticos: {self._y_deseadas}" )
+        print(f"Iniciando entrenamiento | Ejemplos: {len(self._datos_entrada)} | COTA: {self._COTA} | Eta: {self._tasa_aprendizaje} | Objetivos: {self._y_deseadas}" )
  
         #agrego sesgo y retorno una nueva lista
         datos_entrada = self.agregar_sesgo()
