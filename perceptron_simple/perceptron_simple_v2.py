@@ -85,16 +85,13 @@ class PerceptronSimple:
             #le asigno la funcion para calcular el producto interno y el signo
             O = self.calcular_salida(d_actual,w) 
             e = y_actual - O
-            print(f"Error puntual e: {e}")
+          
 
             #lista deltas para cada w
-            deltas_w = self.calc_deltas(e, d_actual)
-            print(f"Deltas: {deltas_w}")
-            
+            deltas_w = self.calc_deltas(e, d_actual)
             
             w = self.actualizar_w(w, deltas_w)
-            print(f"Pesos actualizados: {w}")
-
+            
             #verifico la cantidad de error global
             error = self.calc_error_global(datos_entrada, w)
             print(f"Error global: {error:.4f}")
