@@ -128,9 +128,7 @@ def cargar_salida():
         return [float(array)]
     return array.tolist()
 
-
-# ---- MAIN ----
-
+#cargo los datos de entrenamiento
 datos_entrada = cargar_entrada()
 y_deseadas = cargar_salida()
 
