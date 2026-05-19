@@ -1,0 +1,248 @@
+import random
+from math import tanh
+import copy
+
+
+# agrego un 1 al final de cada ejemplo para representar el sesgo
+def agregar_sesgo(datos_entrada):
+    return [i + [1] for i in datos_entrada]
+
+
+# producto interno entre entrada y pesos, da la exitacion de la neurona
+def calcular_salida(d_actual, w, beta):
+    resultado = 0
+    for i in range(len(d_actual)):
+        resultado += d_actual[i] * w[i]
+    # aplico tanh a la exitacion escalada por beta
+    h = resultado
+    return tanh(beta * h)
+
+
+# calculo cuanto se equivoco cada neurona de salida
+def calc_deltas_salida(y_actual, O, beta):
+    delta_salida = []
+    for i in range(len(O)):
+        # diferencia entre lo esperado y lo que salio
+        e_i = y_actual[i] - O[i]
+        # derivada de tanh usando el valor ya activado, evita recalcular
+        derivada_i = beta * (1 - O[i]**2)
+        # el delta combina el error con la sensibilidad de la neurona
+        delta_i = e_i * derivada_i
+        delta_salida.append(delta_i)
+    return delta_salida
+
+
+# propago el error hacia atras, cada neurona oculta recibe su parte del error
+def cacl_deltas_oculta(V, W_ij, delta_salida, beta):
+    delta_oculta = []
+    for j in range(len(V)):
+        # derivada de tanh para esta neurona oculta
+        derivada_j = beta * (1 - V[j]**2)
+        # sumo cuanto contribuyo esta neurona al error de cada salida
+        suma = 0
+        for i in range(len(delta_salida)):
+            # el peso W_ij[i][j] conecta la oculta j con la salida i
+            suma += W_ij[i][j] * delta_salida[i]
+        # el delta es proporcional a su responsabilidad en el error total
+        delta_j = derivada_j * suma
+        delta_oculta.append(delta_j)
+    return delta_oculta
+
+
+# recorre todos los ejemplos y acumula el error cuadratico total
+def calc_error_global(datos_con_sesgo, y_deseadas, w_jk, W_ij, beta):
+    suma_errores = 0.0
+    for ind in range(len(datos_con_sesgo)):
+        d_actual = datos_con_sesgo[ind]
+        y_actual = y_deseadas[ind]
+
+        # forward pass completo para este ejemplo
+        V = []
+        for j in range(len(w_jk)):
+            salida_j = calcular_salida(d_actual, w_jk[j], beta)
+            V.append(salida_j)
+
+        O = []
+        for i in range(len(W_ij)):
+            salida_i = calcular_salida(V, W_ij[i], beta)
+            O.append(salida_i)
+
+        # acumulo el error cuadratico de cada neurona de salida
+        for i in range(len(O)):
+            e = (y_actual[i] - O[i])**2
+            suma_errores += e
+
+    # divido por 2 por convencion, simplifica la derivada al entrenar
+    return suma_errores / 2
+
+
+def iniciar_entrenamiento_batch(datos_entrada, y_deseadas, COTA, tasa_aprendizaje, beta, n_ocultas, n_salidas):
+    print(f"iniciando entrenamiento BATCH | ejemplos: {len(datos_entrada)} | COTA: {COTA} | eta: {tasa_aprendizaje}")
+
+    # agrego sesgo a cada ejemplo
+    datos_con_sesgo = agregar_sesgo(datos_entrada)
+
+    # cantidad de pesos por neurona oculta (entradas + sesgo)
+    n_pesos = len(datos_con_sesgo[0])
+
+    # pesos aleatorios pequeños para romper la simetria inicial
+    w_jk = []
+    for j in range(n_ocultas):
+        vector_w = []
+        for k in range(n_pesos):
+            vector_w.append(random.uniform(-0.9, 0.9))
+        w_jk.append(vector_w)
+
+    # misma logica para la capa de salida
+    W_ij = []
+    for i in range(n_salidas):
+        vector_W = []
+        for j in range(n_ocultas):
+            vector_W.append(random.uniform(-0.9, 0.9))
+        W_ij.append(vector_W)
+
+    print(f"pesos inicial w_jk: {w_jk}")
+    print(f"pesos inicial W_ij: {W_ij}")
+
+    w_min_jk = None
+    W_min_ij = None
+    error_min = float('inf')
+    epoca = 0
+    error = float('inf')
+    umbral = 0.001
+
+    while error > umbral and epoca < COTA:
+
+        # reinicio los acumuladores al inicio de cada epoca
+        # van a ir sumando el gradiente de cada ejemplo antes de tocar los pesos
+        grad_W_ij = []
+        for i in range(n_salidas):
+            fila = []
+            for j in range(n_ocultas):
+                fila.append(0.0)
+            grad_W_ij.append(fila)
+
+        grad_w_jk = []
+        for j in range(n_ocultas):
+            fila = []
+            for k in range(n_pesos):
+                fila.append(0.0)
+            grad_w_jk.append(fila)
+
+        # recorro todos los ejemplos para acumular gradientes sin modificar pesos todavia
+        for ind in range(len(datos_con_sesgo)):
+            d_actual = datos_con_sesgo[ind]
+            y_actual = y_deseadas[ind]
+
+            # forward pass capa oculta
+            V = []
+            for j in range(n_ocultas):
+                salida_j = calcular_salida(d_actual, w_jk[j], beta)
+                V.append(salida_j)
+
+            # forward pass capa de salida
+            O = []
+            for k in range(n_salidas):
+                salida_i = calcular_salida(V, W_ij[k], beta)
+                O.append(salida_i)
+
+            # backprop: calculo deltas de salida y oculta
+            delta_salida = calc_deltas_salida(y_actual, O, beta)
+            delta_oculta = cacl_deltas_oculta(V, W_ij, delta_salida, beta)
+
+            # sumo el aporte de este ejemplo al gradiente acumulado
+            # es el mismo calculo que antes estaba dentro de actualizar_W_ij
+            for i in range(n_salidas):
+                for j in range(n_ocultas):
+                    grad_W_ij[i][j] += delta_salida[i] * V[j]
+
+            # mismo para los pesos de la capa oculta
+            for j in range(n_ocultas):
+                for k in range(n_pesos):
+                    grad_w_jk[j][k] += delta_oculta[j] * d_actual[k]
+
+        # una sola actualizacion por epoca con el promedio del gradiente
+        # dividir por n evita que datasets grandes generen ajustes desproporcionados
+        n = len(datos_con_sesgo)
+
+        for i in range(n_salidas):
+            for j in range(n_ocultas):
+                W_ij[i][j] += tasa_aprendizaje * (grad_W_ij[i][j] / n)
+
+        for j in range(n_ocultas):
+            for k in range(n_pesos):
+                w_jk[j][k] += tasa_aprendizaje * (grad_w_jk[j][k] / n)
+
+        # error global al terminar la epoca, solo para monitoreo y guardar mejores pesos
+        error = calc_error_global(datos_con_sesgo, y_deseadas, w_jk, W_ij, beta)
+        print(f"epoca: {epoca} | error global: {error:.4f}")
+
+        # deepcopy porque w_jk es lista de listas, un copy simple compartiria las sublistas
+        if error < error_min:
+            error_min = error
+            w_min_jk = copy.deepcopy(w_jk)
+            W_min_ij = copy.deepcopy(W_ij)
+
+        epoca += 1
+
+    print(f"\n=== entrenamiento finalizado ===")
+    print(f"epocas realizadas: {epoca}")
+    return w_min_jk, W_min_ij, error_min
+
+
+# XOR
+# entradas:
+ x = {(-1,1), (1,-1), (-1,-1), (1,1)}
+datos_entrada = [
+    [-1,  1],
+    [ 1, -1],
+    [-1, -1],
+    [ 1,  1]
+]
+
+# salida esperada del enunciado: y = {1, 1, -1, -1}
+# ya esta en rango [-1, 1] asi que no necesita normalizacion
+y_deseadas = [
+    [1],
+    [1],
+    [-1],
+    [-1]
+]
+
+# hiperparametros
+COTA = 10000
+tasa_aprendizaje = 0.1
+beta = 0.8
+n_ocultas = 3
+n_salidas = len(y_deseadas[0])
+
+# entrenamiento
+w_min_jk, W_min_ij, error_min = iniciar_entrenamiento_batch(
+    datos_entrada, y_deseadas, COTA, tasa_aprendizaje, beta, n_ocultas, n_salidas
+)
+
+print(f"\nmejores pesos jk: {w_min_jk}")
+print(f"mejores pesos ij: {W_min_ij}")
+print(f"error minimo alcanzado: {error_min:.4f}")
+
+# ============================================================
+# VERIFICACION FINAL
+# ============================================================
+print("\n--- VERIFICACION FINAL ---")
+datos_con_sesgo = agregar_sesgo(datos_entrada)
+
+for ind in range(len(datos_con_sesgo)):
+    d_actual = datos_con_sesgo[ind]
+
+    # forward pass con los mejores pesos encontrados
+    V = []
+    for j in range(n_ocultas):
+        salida_j = calcular_salida(d_actual, w_min_jk[j], beta)
+        V.append(salida_j)
+
+    O = []
+    for k in range(n_salidas):
+        salida_i = calcular_salida(V, W_min_ij[k], beta)
+        O.append(salida_i)
+
+    print(f"entrada: {datos_entrada[ind]} -> prediccion: {O[0]:.4f} (esperado: {y_deseadas[ind][0]})")
