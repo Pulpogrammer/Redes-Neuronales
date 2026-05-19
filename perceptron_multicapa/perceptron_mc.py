@@ -190,11 +190,11 @@ def iniciar_entrenamiento_batch(datos_entrada, y_deseadas, COTA, tasa_aprendizaj
     return w_min_jk, W_min_ij, error_min
 
 
-# ============================================================
-# BLOQUE PRINCIPAL - XOR con entradas del enunciado
-# ============================================================
+# XOR
+# entradas del enunciado: 
 
-# entradas del enunciado: x = {(-1,1), (1,-1), (-1,-1), (1,1)}
+x = {(-1,1), (1,-1), (-1,-1), (1,1)}
+
 datos_entrada = [
     [-1,  1],
     [ 1, -1],
@@ -227,9 +227,9 @@ print(f"\nmejores pesos jk: {w_min_jk}")
 print(f"mejores pesos ij: {W_min_ij}")
 print(f"error minimo alcanzado: {error_min:.4f}")
 
-# ============================================================
-# VERIFICACION FINAL
-# ============================================================
+
+# VERIFICACION
+
 print("\n--- VERIFICACION FINAL ---")
 datos_con_sesgo = agregar_sesgo(datos_entrada)
 
